@@ -1,0 +1,2232 @@
+{
+  "datasets": [
+    {
+      "name": "e5e2e1ee",
+      "displayName": "perfil_sazonal_mensal_cidade",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.perfil_sazonal_mensal_cidade",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "displayName": "Count"
+          },
+          {
+            "name": "temp_media_avg",
+            "expr": "AVG(temperatura_media_c)",
+            "displayName": "Temperatura Média (°C)"
+          },
+          {
+            "name": "precipitacao_media",
+            "expr": "AVG(precipitacao_total_mm)",
+            "displayName": "Precipitação Média (mm)"
+          },
+          {
+            "name": "temp_max_abs",
+            "expr": "MAX(temperatura_maxima_abs_c)",
+            "displayName": "Temperatura Máxima Absoluta (°C)"
+          },
+          {
+            "name": "temp_min_abs",
+            "expr": "MIN(temperatura_minima_abs_c)",
+            "displayName": "Temperatura Mínima Absoluta (°C)"
+          },
+          {
+            "name": "amplitude_media",
+            "expr": "AVG(amplitude_termica_media_c)",
+            "displayName": "Amplitude Térmica Média (°C)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "7e670fb6",
+      "displayName": "anomalia_climatologica_mensal",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.anomalia_climatologica_mensal",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "displayName": "Count"
+          },
+          {
+            "name": "anomalia_temp_media",
+            "expr": "AVG(anomalia_temp_c)",
+            "displayName": "Anomalia Média de Temperatura (°C)"
+          },
+          {
+            "name": "anomalia_precip_media",
+            "expr": "AVG(anomalia_precipitacao_pct)",
+            "displayName": "Anomalia Média de Precipitação (%)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "f26fcfa4",
+      "displayName": "perfil_sazonal_estacao",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.perfil_sazonal_estacao",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "3e903881",
+      "displayName": "perfil_sazonal_mensal",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.perfil_sazonal_mensal",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "5d8ea511",
+      "displayName": "ranking_meses_extremos",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.ranking_meses_extremos",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "8213146b",
+      "displayName": "tendencia_interanual_mensal",
+      "config": {
+        "version": "1.1",
+        "source": "atmos.gold.tendencia_interanual_mensal",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "displayName": "Count"
+          },
+          {
+            "name": "tendencia_temp_media",
+            "expr": "AVG(tendencia_temp_c_por_ano)",
+            "displayName": "Tendência de Temperatura (°C/ano)"
+          },
+          {
+            "name": "tendencia_precip_media",
+            "expr": "AVG(tendencia_precipitacao_mm_por_ano)",
+            "displayName": "Tendência de Precipitação (mm/ano)"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "visao_geral",
+      "displayName": "Visão Geral",
+      "layout": [
+        {
+          "widget": {
+            "name": "header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Monitoramento Climático — Brasil\n",
+                "Acompanhamento da evolução climática nas cidades monitoradas. Use os filtros globais para selecionar **cidade** e **ano**. Dados consolidados das estações automáticas do INMET e da API Visual Crossing."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_temp_media",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "avg(temperatura_media_c)",
+                      "expression": "AVG(`temperatura_media_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Temperatura Média (°C)",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(temperatura_media_c)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_anomalia_temp",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "avg(anomalia_temp_c)",
+                      "expression": "AVG(`anomalia_temp_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Anomalia de Temperatura (°C)",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(anomalia_temp_c)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_tendencia",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "avg(tendencia_temp_c_por_ano)",
+                      "expression": "AVG(`tendencia_temp_c_por_ano`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Tendência de Temperatura (°C/ano)",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(tendencia_temp_c_por_ano)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_precipitacao",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "avg(precipitacao_total_mm)",
+                      "expression": "AVG(`precipitacao_total_mm`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Precipitação Média Mensal (mm)",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(precipitacao_total_mm)",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 2,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "temp_anual_linha",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    },
+                    {
+                      "name": "avg(temperatura_media_c)",
+                      "expression": "AVG(`temperatura_media_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Evolução da Temperatura Média Anual por Cidade",
+                "showTitle": true
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "ano",
+                  "displayName": "Ano",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(temperatura_media_c)",
+                  "displayName": "Temperatura Média (°C)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "displayName": "Cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 7,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "anomalia_cidade_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "avg(anomalia_temp_c)",
+                      "expression": "AVG(`anomalia_temp_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Anomalia Média de Temperatura por Cidade (°C)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "cidade",
+                  "displayName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(anomalia_temp_c)",
+                  "displayName": "anomalia_temp_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "displayName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 6,
+            "width": 5,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "tendencia_cidade_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "avg(tendencia_temp_c_por_ano)",
+                      "expression": "AVG(`tendencia_temp_c_por_ano`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Tendência de Temperatura por Cidade (°C/ano)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "cidade",
+                  "displayName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(tendencia_temp_c_por_ano)",
+                  "displayName": "tendencia_temp_c_por_ano",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "displayName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 13,
+            "width": 12,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "af478a29",
+      "displayName": "Perfil Sazonal Mensal",
+      "layout": [
+        {
+          "widget": {
+            "name": "temp_sp_evolucao",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_media_c",
+                      "expression": "`temperatura_media_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Evolução Mensal da Temperatura Média por Cidade (°C)",
+                "showTitle": true
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "displayName": "Mês",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "temperatura_media_c",
+                  "displayName": "Temperatura Média (°C)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "displayName": "Cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "precipitacao_mensal",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "precipitacao_total_mm",
+                      "expression": "`precipitacao_total_mm`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Precipitação Total Mensal (mm)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "precipitacao_total_mm",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "umidade_mensal",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "umidade_media_pct",
+                      "expression": "`umidade_media_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Umidade Relativa Média (%)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "umidade_media_pct",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "amplitude_mensal",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "amplitude_termica_media_c",
+                      "expression": "`amplitude_termica_media_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Amplitude Térmica Média (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "amplitude_termica_media_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 12,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "tendencias",
+      "displayName": "Tendências de Longo Prazo",
+      "layout": [
+        {
+          "widget": {
+            "name": "tendencia_temp_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "tendencia_temp_c_por_ano",
+                      "expression": "`tendencia_temp_c_por_ano`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Tendência de Temperatura por Mês (°C/ano)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "tendencia_temp_c_por_ano",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "tendencia_precip_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "tendencia_precipitacao_mm_por_ano",
+                      "expression": "`tendencia_precipitacao_mm_por_ano`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Tendência de Precipitação por Mês (mm/ano)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "tendencia_precipitacao_mm_por_ano",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "r2_temp_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "r2_temp",
+                      "expression": "`r2_temp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Qualidade do Ajuste (R² Temperatura)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "r2_temp",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "tabela_tendencias",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8213146b",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "anos_disponiveis",
+                      "expression": "`anos_disponiveis`"
+                    },
+                    {
+                      "name": "tendencia_temp_c_por_ano",
+                      "expression": "`tendencia_temp_c_por_ano`"
+                    },
+                    {
+                      "name": "tendencia_precipitacao_mm_por_ano",
+                      "expression": "`tendencia_precipitacao_mm_por_ano`"
+                    },
+                    {
+                      "name": "r2_temp",
+                      "expression": "`r2_temp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Dados Completos — Tendências",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "cidade"
+                  },
+                  {
+                    "fieldName": "mes"
+                  },
+                  {
+                    "fieldName": "anos_disponiveis"
+                  },
+                  {
+                    "fieldName": "tendencia_temp_c_por_ano"
+                  },
+                  {
+                    "fieldName": "tendencia_precipitacao_mm_por_ano"
+                  },
+                  {
+                    "fieldName": "r2_temp"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "anomalias",
+      "displayName": "Anomalias Climatológicas",
+      "layout": [
+        {
+          "widget": {
+            "name": "anomalia_temp_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "anomalia_temp_c",
+                      "expression": "`anomalia_temp_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Anomalia de Temperatura por Mês (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "anomalia_temp_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "temp_vs_normal",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_media_c",
+                      "expression": "`temperatura_media_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Temperatura Observada vs Normal Climatológica (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "temperatura_media_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "anomalia_precip_pct",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "anomalia_precipitacao_pct",
+                      "expression": "`anomalia_precipitacao_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Anomalia de Precipitação (%)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "anomalia_precipitacao_pct",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "tabela_anomalias",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_media_c",
+                      "expression": "`temperatura_media_c`"
+                    },
+                    {
+                      "name": "temp_normal_c",
+                      "expression": "`temp_normal_c`"
+                    },
+                    {
+                      "name": "anomalia_temp_c",
+                      "expression": "`anomalia_temp_c`"
+                    },
+                    {
+                      "name": "precipitacao_total_mm",
+                      "expression": "`precipitacao_total_mm`"
+                    },
+                    {
+                      "name": "precipitacao_normal_mm",
+                      "expression": "`precipitacao_normal_mm`"
+                    },
+                    {
+                      "name": "anomalia_precipitacao_mm",
+                      "expression": "`anomalia_precipitacao_mm`"
+                    },
+                    {
+                      "name": "anomalia_precipitacao_pct",
+                      "expression": "`anomalia_precipitacao_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Dados Completos — Anomalias",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "cidade"
+                  },
+                  {
+                    "fieldName": "ano"
+                  },
+                  {
+                    "fieldName": "mes"
+                  },
+                  {
+                    "fieldName": "temperatura_media_c"
+                  },
+                  {
+                    "fieldName": "temp_normal_c"
+                  },
+                  {
+                    "fieldName": "anomalia_temp_c"
+                  },
+                  {
+                    "fieldName": "precipitacao_total_mm"
+                  },
+                  {
+                    "fieldName": "precipitacao_normal_mm"
+                  },
+                  {
+                    "fieldName": "anomalia_precipitacao_mm"
+                  },
+                  {
+                    "fieldName": "anomalia_precipitacao_pct"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "heatmap_anomalia_temp",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e670fb6",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "avg_anomalia",
+                      "expression": "AVG(`anomalia_temp_c`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "frame": {
+                "title": "Heatmap — Anomalia de Temperatura por Mês × Cidade (°C)",
+                "showTitle": true
+              },
+              "jsonSpec": {
+                "type": "vega-lite",
+                "spec": "{\"$schema\":\"https://vega.github.io/schema/vega-lite/v6.json\",\"data\":{\"name\":\"databricks_query\"},\"width\":\"container\",\"height\":\"container\",\"config\":{\"autosize\":{\"type\":\"fit\",\"contains\":\"padding\"},\"view\":{\"stroke\":\"transparent\"}},\"encoding\":{\"x\":{\"field\":\"mes\",\"type\":\"ordinal\",\"title\":\"Mês\",\"axis\":{\"labelExpr\":\"['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][datum.value - 1]\"}},\"y\":{\"field\":\"cidade\",\"type\":\"nominal\",\"title\":\"Cidade\",\"sort\":{\"field\":\"avg_anomalia\",\"op\":\"mean\",\"order\":\"descending\"}}},\"layer\":[{\"mark\":{\"type\":\"rect\"},\"encoding\":{\"color\":{\"field\":\"avg_anomalia\",\"type\":\"quantitative\",\"title\":\"Anomalia (°C)\",\"scale\":{\"scheme\":\"blueorange\",\"domainMid\":0},\"legend\":{\"title\":\"Anomalia (°C)\",\"format\":\"+.1f\"}},\"tooltip\":[{\"field\":\"cidade\",\"type\":\"nominal\",\"title\":\"Cidade\"},{\"field\":\"mes\",\"type\":\"ordinal\",\"title\":\"Mês\"},{\"field\":\"avg_anomalia\",\"type\":\"quantitative\",\"title\":\"Anomalia Média (°C)\",\"format\":\"+.2f\"}]}},{\"mark\":{\"type\":\"text\",\"fontSize\":10,\"fontWeight\":\"bold\"},\"encoding\":{\"text\":{\"field\":\"avg_anomalia\",\"type\":\"quantitative\",\"format\":\"+.1f\"},\"color\":{\"condition\":{\"test\":\"abs(datum.avg_anomalia) > 1.2\",\"value\":\"white\"},\"value\":\"#333333\"}}}]}"
+              },
+              "widgetType": "custom-vega-viz",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cidade"
+                  },
+                  {
+                    "fieldName": "mes"
+                  },
+                  {
+                    "fieldName": "avg_anomalia"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 12,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "rankings",
+      "displayName": "Rankings & Extremos",
+      "layout": [
+        {
+          "widget": {
+            "name": "temp_max_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5d8ea511",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_maxima_abs_c",
+                      "expression": "`temperatura_maxima_abs_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Temperatura Máxima Absoluta por Mês (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "temperatura_maxima_abs_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "precip_rank_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5d8ea511",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "precipitacao_total_mm",
+                      "expression": "`precipitacao_total_mm`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Precipitação Total por Mês (mm)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "precipitacao_total_mm",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "temp_min_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5d8ea511",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_minima_abs_c",
+                      "expression": "`temperatura_minima_abs_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Temperatura Mínima Absoluta por Mês (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "mes",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "temperatura_minima_abs_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "tabela_rankings",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5d8ea511",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    },
+                    {
+                      "name": "mes",
+                      "expression": "`mes`"
+                    },
+                    {
+                      "name": "temperatura_maxima_abs_c",
+                      "expression": "`temperatura_maxima_abs_c`"
+                    },
+                    {
+                      "name": "temperatura_minima_abs_c",
+                      "expression": "`temperatura_minima_abs_c`"
+                    },
+                    {
+                      "name": "precipitacao_total_mm",
+                      "expression": "`precipitacao_total_mm`"
+                    },
+                    {
+                      "name": "rank_mes_mais_quente",
+                      "expression": "`rank_mes_mais_quente`"
+                    },
+                    {
+                      "name": "rank_mes_mais_frio",
+                      "expression": "`rank_mes_mais_frio`"
+                    },
+                    {
+                      "name": "rank_mes_mais_chuvoso",
+                      "expression": "`rank_mes_mais_chuvoso`"
+                    },
+                    {
+                      "name": "rank_mes_mais_seco",
+                      "expression": "`rank_mes_mais_seco`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Rankings de Meses Extremos",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "cidade"
+                  },
+                  {
+                    "fieldName": "ano"
+                  },
+                  {
+                    "fieldName": "mes"
+                  },
+                  {
+                    "fieldName": "temperatura_maxima_abs_c"
+                  },
+                  {
+                    "fieldName": "temperatura_minima_abs_c"
+                  },
+                  {
+                    "fieldName": "precipitacao_total_mm"
+                  },
+                  {
+                    "fieldName": "rank_mes_mais_quente"
+                  },
+                  {
+                    "fieldName": "rank_mes_mais_frio"
+                  },
+                  {
+                    "fieldName": "rank_mes_mais_chuvoso"
+                  },
+                  {
+                    "fieldName": "rank_mes_mais_seco"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "global_filters",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "filtro_cidade",
+            "queries": [
+              {
+                "name": "dashboards/01f19210c5d51be2a56416cdfcf01d0a/datasets/01f192114a081c28b885ceda3c76174c_cidade",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "cidade_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Cidade",
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cidade",
+                    "queryName": "dashboards/01f19210c5d51be2a56416cdfcf01d0a/datasets/01f192114a081c28b885ceda3c76174c_cidade"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filtro_ano",
+            "queries": [
+              {
+                "name": "dashboards/01f19210c5d51be2a56416cdfcf01d0a/datasets/01f192114a081c28b885ceda3c76174c_ano",
+                "query": {
+                  "datasetName": "e5e2e1ee",
+                  "fields": [
+                    {
+                      "name": "ano",
+                      "expression": "`ano`"
+                    },
+                    {
+                      "name": "ano_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Ano",
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "ano",
+                    "queryName": "dashboards/01f19210c5d51be2a56416cdfcf01d0a/datasets/01f192114a081c28b885ceda3c76174c_ano"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "estacoes",
+      "displayName": "Perfil por Estação",
+      "layout": [
+        {
+          "widget": {
+            "name": "temp_estacao_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f26fcfa4",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "temp_media_estacao_c",
+                      "expression": "`temp_media_estacao_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Temperatura Média por Estação do Ano (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "estacao_ano",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "temp_media_estacao_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "precip_estacao_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f26fcfa4",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "precipitacao_total_estacao_mm",
+                      "expression": "`precipitacao_total_estacao_mm`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Precipitação Total por Estação (mm)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "estacao_ano",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "precipitacao_total_estacao_mm",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "amplitude_estacao_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f26fcfa4",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "amplitude_media_estacao_c",
+                      "expression": "`amplitude_media_estacao_c`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "title": "Amplitude Térmica por Estação (°C)",
+                "showTitle": true
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "estacao_ano",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "amplitude_media_estacao_c",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "cidade",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "tabela_estacoes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f26fcfa4",
+                  "fields": [
+                    {
+                      "name": "cidade",
+                      "expression": "`cidade`"
+                    },
+                    {
+                      "name": "ano_estacao",
+                      "expression": "`ano_estacao`"
+                    },
+                    {
+                      "name": "estacao_ano",
+                      "expression": "`estacao_ano`"
+                    },
+                    {
+                      "name": "temp_media_estacao_c",
+                      "expression": "`temp_media_estacao_c`"
+                    },
+                    {
+                      "name": "precipitacao_total_estacao_mm",
+                      "expression": "`precipitacao_total_estacao_mm`"
+                    },
+                    {
+                      "name": "amplitude_media_estacao_c",
+                      "expression": "`amplitude_media_estacao_c`"
+                    },
+                    {
+                      "name": "temp_maxima_abs_estacao_c",
+                      "expression": "`temp_maxima_abs_estacao_c`"
+                    },
+                    {
+                      "name": "temp_minima_abs_estacao_c",
+                      "expression": "`temp_minima_abs_estacao_c`"
+                    },
+                    {
+                      "name": "dias_com_dados",
+                      "expression": "`dias_com_dados`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Dados Completos — Estações",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "cidade"
+                  },
+                  {
+                    "fieldName": "ano_estacao"
+                  },
+                  {
+                    "fieldName": "estacao_ano"
+                  },
+                  {
+                    "fieldName": "temp_media_estacao_c"
+                  },
+                  {
+                    "fieldName": "precipitacao_total_estacao_mm"
+                  },
+                  {
+                    "fieldName": "amplitude_media_estacao_c"
+                  },
+                  {
+                    "fieldName": "temp_maxima_abs_estacao_c"
+                  },
+                  {
+                    "fieldName": "temp_minima_abs_estacao_c"
+                  },
+                  {
+                    "fieldName": "dias_com_dados"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "visualizationColors": [
+        "#E53935",
+        "#1E88E5",
+        "#43A047",
+        "#FB8C00",
+        "#8E24AA",
+        "#00ACC1",
+        "#F4511E",
+        "#0288D1",
+        "#F9A825",
+        "#00897B"
+      ],
+      "widgetHeaderAlignment": "LEFT",
+      "widgetCornerRadius": 8,
+      "widgetShadow": 5,
+      "fontSettings": {
+        "base": {
+          "fontFamily": "Inter"
+        },
+        "widgetTitle": {
+          "fontWeight": 600
+        }
+      }
+    },
+    "applyModeEnabled": false
+  }
+}
