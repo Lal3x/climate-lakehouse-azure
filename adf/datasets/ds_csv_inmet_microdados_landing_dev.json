@@ -1,0 +1,44 @@
+{
+	"name": "ds_csv_inmet_microdados_landing_dev",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adlsg2_climate_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ano": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			},
+			"id_estacao": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Inmet"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().file_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@toLower(\n    concat(\n        'landing/inmet/microdados/',\n        dataset().id_estacao,\n        '/ano=',\n         dataset().ano\n    ))",
+					"type": "Expression"
+				},
+				"fileSystem": "climate-lading-eastus-001"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

@@ -1,0 +1,99 @@
+{
+	"name": "pl_ingest_inmet_estacao_lading_dev",
+	"properties": {
+		"activities": [
+			{
+				"name": "copy_inmet_estacao_to_landing",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQueryV2Source",
+						"query": "@concat(\n    'SELECT * FROM basedosdados.br_inmet_bdmep.estacao WHERE id_estacao=''', \n    pipeline().parameters.id_estacao,\n    ''';'\n)\n"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_bigquery_inmet_src_dev",
+						"type": "DatasetReference",
+						"parameters": {
+							"id_estacao": {
+								"value": "@pipeline().parameters.id_estacao",
+								"type": "Expression"
+							},
+							"ano": {
+								"value": "@pipeline().parameters.ano",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_csv_inmet_estacao_landing_dev",
+						"type": "DatasetReference",
+						"parameters": {
+							"ano": {
+								"value": "@pipeline().parameters.ano",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@concat(\n    'climate_',\n    pipeline().parameters.id_estacao,'_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv'\n)",
+								"type": "Expression"
+							},
+							"id_estacao": {
+								"value": "@pipeline().parameters.id_estacao",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"id_estacao": {
+				"type": "string"
+			},
+			"ano": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"list_year": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "INMET"
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "ls_adlsg2_climate_dev",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://saclimatedeveastus001.dfs.core.windows.net/"
+		}
+	}
+}

@@ -1,0 +1,40 @@
+{
+	"name": "ds_json_visualcrossing_landing_dev",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adlsg2_climate_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"city": {
+				"type": "string"
+			},
+			"date": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "VIsualCrossing"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().file_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@toLower(concat(\n    'Landing/VisualCrossing/',\n    dataset().city,\n    '/Year=', formatDateTime(dataset().date, 'yyyy'),\n    '/Month=', formatDateTime(dataset().date, 'MM'),\n    '/day=', formatDateTime(dataset().date, 'dd')\n))",
+					"type": "Expression"
+				},
+				"fileSystem": "climate-lading-eastus-001"
+			}
+		},
+		"schema": {}
+	}
+}

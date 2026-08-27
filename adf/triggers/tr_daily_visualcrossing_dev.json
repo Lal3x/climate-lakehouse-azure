@@ -1,0 +1,36 @@
+{
+	"name": "tr_daily_visualcrossing_dev",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_ingest_VIsualCrossing_lading_dev_daily",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"city": "recife"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-08-05T00:34:00",
+				"endTime": "2026-08-06T00:34:00",
+				"timeZone": "E. South America Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						7
+					]
+				}
+			}
+		}
+	}
+}

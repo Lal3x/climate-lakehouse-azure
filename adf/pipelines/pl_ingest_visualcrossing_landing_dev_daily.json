@@ -1,0 +1,156 @@
+{
+  "name": "pl_ingest_VIsualCrossing_lading_dev_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "copy_visualCrosssing_ to_landing",
+        "description": "Copia dados da origem para storage",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Set_Date",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "JsonSource",
+            "storeSettings": {
+              "type": "HttpReadSettings",
+              "requestMethod": "GET"
+            },
+            "formatSettings": {
+              "type": "JsonReadSettings"
+            }
+          },
+          "sink": {
+            "type": "JsonSink",
+            "storeSettings": {
+              "type": "AzureBlobFSWriteSettings"
+            },
+            "formatSettings": {
+              "type": "JsonWriteSettings"
+            }
+          },
+          "enableStaging": false
+        },
+        "inputs": [
+          {
+            "referenceName": "ds_json_visualcrossing_src_dev",
+            "type": "DatasetReference",
+            "parameters": {
+              "citty": {
+                "value": "@pipeline().parameters.city",
+                "type": "Expression"
+              },
+              "date": {
+                "value": "@variables('date')",
+                "type": "Expression"
+              },
+              "apiKey": {
+                "value": "@activity('web_get_api_key').output.value",
+                "type": "Expression"
+              }
+            }
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "ds_json_visualcrossing_landing_dev",
+            "type": "DatasetReference",
+            "parameters": {
+              "city": {
+                "value": "@pipeline().parameters.city",
+                "type": "Expression"
+              },
+              "date": {
+                "value": "@variables('date')",
+                "type": "Expression"
+              },
+              "file_name": {
+                "value": "@concat(\n    'climate_',\n    pipeline().parameters.city, '_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.json'\n)",
+                "type": "Expression"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "web_get_api_key",
+        "type": "WebActivity",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "url": {
+            "value": "@concat(pipeline().parameters.keyVaultBaseUrl, '/secrets/visualcrossing-api-key-dev?api-version=2025-07-01')",
+            "type": "Expression"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net/"
+          }
+        }
+      },
+      {
+        "name": "Set_Date",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "web_get_api_key",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "date",
+          "value": {
+            "value": "@utcNow('yyyy-MM-dd')",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "city": {
+        "type": "string"
+      },
+      "keyVaultBaseUrl": {
+        "type": "string",
+        "defaultValue": "https://<key-vault-name>.vault.azure.net"
+      }
+    },
+    "variables": {
+      "date": {
+        "type": "String"
+      }
+    },
+    "folder": {
+      "name": "VisualCrossing"
+    },
+    "annotations": []
+  }
+}

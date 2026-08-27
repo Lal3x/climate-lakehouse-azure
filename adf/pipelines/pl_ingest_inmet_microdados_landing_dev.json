@@ -1,0 +1,144 @@
+{
+  "name": "pl_ingest_inmet_microdados_lading_dev",
+  "properties": {
+    "activities": [
+      {
+        "name": "Set_Year_list",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "list_year",
+          "value": {
+            "value": "@range(pipeline().parameters.startYear, add(1, sub(pipeline().parameters.endYear,pipeline().parameters.startYear)))",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "ForEach_year",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "Set_Year_list",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "items": {
+            "value": "@variables('list_year')",
+            "type": "Expression"
+          },
+          "batchCount": 10,
+          "activities": [
+            {
+              "name": "copy_inmet_ to_landing",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "GoogleBigQueryV2Source",
+                  "query": {
+                    "value": "@concat(\n    'SELECT * FROM basedosdados.br_inmet_bdmep.microdados WHERE id_estacao=''',\n    pipeline().parameters.id_estacao,\n    ''' AND ano=',\n    string(item())\n)\n",
+                    "type": "Expression"
+                  }
+                },
+                "sink": {
+                  "type": "DelimitedTextSink",
+                  "storeSettings": {
+                    "type": "AzureBlobFSWriteSettings"
+                  },
+                  "formatSettings": {
+                    "type": "DelimitedTextWriteSettings",
+                    "quoteAllText": true,
+                    "fileExtension": ".txt"
+                  }
+                },
+                "enableStaging": false,
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": true,
+                    "treatBooleanAsNumber": false
+                  }
+                }
+              },
+              "inputs": [
+                {
+                  "referenceName": "ds_bigquery_inmet_src_dev",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "id_estacao": {
+                      "value": "@pipeline().parameters.id_estacao",
+                      "type": "Expression"
+                    },
+                    "ano": {
+                      "value": "@item()",
+                      "type": "Expression"
+                    }
+                  }
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "ds_csv_inmet_microdados_landing_dev",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "ano": {
+                      "value": "@item()",
+                      "type": "Expression"
+                    },
+                    "file_name": {
+                      "value": "@concat(\n    'climate_',\n    pipeline().parameters.id_estacao,'_',string(item()), '_', formatDateTime(utcNow(), 'yyyyMMddHHmmss'), '.csv'\n)",
+                      "type": "Expression"
+                    },
+                    "id_estacao": {
+                      "value": "@pipeline().parameters.id_estacao",
+                      "type": "Expression"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "id_estacao": {
+        "type": "string"
+      },
+      "startYear": {
+        "type": "int"
+      },
+      "endYear": {
+        "type": "int"
+      }
+    },
+    "variables": {
+      "list_year": {
+        "type": "Array"
+      }
+    },
+    "folder": {
+      "name": "INMET"
+    },
+    "annotations": []
+  }
+}

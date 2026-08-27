@@ -1,0 +1,10 @@
+{
+	"name": "ls_akv_climate_dev",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-climate-dev-001.vault.azure.net/"
+		}
+	}
+}
